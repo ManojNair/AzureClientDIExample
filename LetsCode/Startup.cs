@@ -2,11 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Management.Fluent;
-using Microsoft.Azure.Management.ResourceManager.Fluent;
-using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
 using Microsoft.Extensions.DependencyInjection;
-using static Microsoft.Azure.Management.ResourceManager.Fluent.Core.HttpLoggingDelegatingHandler;
 
 namespace LetsCode
 {
@@ -48,30 +44,5 @@ namespace LetsCode
                 await context.Response.WriteAsync(vms.Name);
             });
         }
-    }
-
-    public interface IAzureClient
-    {
-      //  AzureCredentials GetCredentials();
-        
-        
-        IAzure GetClient();
-    }
-
-    public class AzureClient : IAzureClient
-    {
-        private readonly AzureCredentials _credentials;
-        // public AzureCredentials Credentials = SdkContext.AzureCredentialsFactory.FromFile(@"auth.json");
-
-        public AzureClient()
-        {
-            _credentials = SdkContext.AzureCredentialsFactory.FromFile(@"auth.json");
-        }
-
-        
-
-        public IAzure GetClient() => Azure.Configure()
-            .WithLogLevel(Level.BodyAndHeaders)
-            .Authenticate(_credentials).WithDefaultSubscription();
     }
 }
